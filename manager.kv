@@ -1,0 +1,141 @@
+WindowManager:
+    MainWindow:
+    GenerateWindow:
+    HelpWindow:
+
+<MainWindow>:
+    name: "main"
+    FloatLayout:
+        GridLayout:
+            pos_hint: {"y": 0.1}
+            size_hint_y: 0.9
+            cols: 3
+            Label:
+                text: "Games"
+            Label:
+                text: "Character Sprites"
+            Label:
+                text: "Backgrounds"
+
+            GridLayout:
+                cols: 2
+
+                Label:
+                    text: "[TO BE ADDED]\nClass of '09 (Original)"
+                    halign: 'center'
+                CheckBox:
+                    #on_active: root.checkbox_click('og', self.active)
+                Label:
+                    text: "Class of '09: The Re-Up"
+                CheckBox:
+                    on_active: root.checkbox_click('reup', self.active)
+                Label:
+                    text: "[TO BE ADDED]\nClass of '09: The Flipside"
+                    halign: 'center'
+                CheckBox:
+                    #on_active: root.checkbox_click('flip', self.active)
+                Label:
+                    text: "[TO BE ADDED]\nRemove Flipside's fetish content: "
+                    halign: 'center'
+                CheckBox:    
+                    #on_active: root.checkbox_click('flipfilter', self.active)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "[TO BE ADDED]\nShuffle clothes only"
+                    halign: 'center'
+                CheckBox:
+                    group: 'char'
+                    #on_active: root.checkbox_click('clothes', self.active)
+                Label:
+                    text: "[TO BE ADDED]\nShuffle expressions only"
+                    halign: 'center'
+                CheckBox:
+                    group: 'char'
+                    #on_active: root.checkbox_click('expressions', self.active)
+                Label:
+                    text: "Shuffle within characters"
+                CheckBox:
+                    group: 'char'
+                    on_active: root.checkbox_click('characters', self.active)
+                Label:
+                    text: "Shuffle across characters"
+                CheckBox:
+                    group: 'char'
+                    on_active: root.checkbox_click('sprites', self.active)
+                Label:
+                    text: "[TO BE ADDED]\nShuffle across characters, keep expressions"
+                    halign: 'center'
+                CheckBox:
+                    group: 'char'
+                    #on_active: root.checkbox_click('spriteswexp', self.active)
+            GridLayout:
+                cols: 2
+                Label:
+                    text: "Shuffle similar backgrounds"
+                CheckBox:
+                    group: 'bg'
+                    on_active: root.checkbox_click('similar', self.active)
+                Label:
+                    text: "Shuffle all backgrounds"
+                CheckBox:
+                    group: 'bg'
+                    on_active: root.checkbox_click('all', self.active)
+                Label:
+                    text: "[TO BE ADDED]\nRetain correct ambience"
+                    halign: 'center'
+                CheckBox:
+                    #on_active: root.checkbox_click('ambience', self.active)
+            
+        GridLayout:
+            cols: 2
+            size_hint_y: 0.1
+            pos_hint: {"y": 0}
+            
+            y: 200
+            Button:
+                text: "Help"
+                on_press: root.manager.current = 'help'
+            Button:
+                text: "Next > "
+                on_press: root.manager.current = 'generate'
+
+<GenerateWindow>:
+    name: 'generate'
+
+    FloatLayout:
+        
+
+        GridLayout:
+            cols: 1
+
+            Label:
+                text: root.settingsdisplay
+
+            Label:
+                text: "Seed (leave blank for random seed):"
+            TextInput:
+                id: seed
+                multiline: True
+        GridLayout:
+            cols: 2
+            size_hint_y: 0.1
+            pos_hint: {"y": 0}
+            
+            Button:
+                text: "< Back"
+                on_press: root.manager.current = 'main'
+            Button:
+                text: "Fuck up your game"
+                on_press: root.generate()
+
+<HelpWindow>:
+    name: "help"
+    Label:
+        text: "GAME SELECTION\nThe games you select will have their sprites, audio, choices, and other elements added to the randomization pool. You will need to have a copy of each game you want to use.\nIMPORTANT: ONLY THE RE-UP IS CURRENTLY SUPPORTED. THE ORIGINAL WILL BE ADDED NEXT, THEN FLIPSIDE.\n\nClass of 09, Re-Up, and Flipside toggles - Add their respective games to the randomization pool. If the program cannot find these games, it will ask you for the path.\n\nRemove Flipside's fetish content - Removes all foot fetish scenes and the sex slave ending if Flipside is enabled.\n\n\nCHARACTER SPRITES\nControls how the randomizer shuffles character sprites.\n\n(TO BE ADDED) Shuffle clothes only - Will shuffle the characters' clothing, but keep their expressions as intended. This means Nicole might be wearing the diamond shirt instead of the ghost one, but she'll still look pissed off.\n(TO BE ADDED) Shuffle expressions only - Will shuffle the characters' expressions, but keep their clothing as intended. This means Nicole might look pissed off instead of depressed, but she'll be in her intended outfit.\nShuffle within characters - Characters' entire sprite pool is shuffled. Nicole will always be Nicole, but her expressions and clothing may be different\nShuffle across characters - All character sprites are shuffled together. Nicole might be Coach Colby, Jecka might be Jeffery.\n(TO BE ADDED) Shuffle across characters, keep expressions - The same as Shuffle across characters, but characters' expressions will be retained whenever possible. So, pissed off Nicole will become pissed of Coach Colby instead of a random emotion.\n\n\nBACKGROUNDS\nControls how backgrounds are randomized.\n\nShuffle similar backgrounds - Will shuffle backgrounds in separate pools based on similarity. School areas will stay school areas, alleyways will be alleyways, houses will be houses, etc.\nShuffle all backgrounds - All background images are randomized.\n\n(TO BE ADDED) Retain correct ambience - Shuffled backgrounds will have the correct ambient tracks. If disabled, a cafeteria may shuffle and become a street, but it will still have the background noise of a cafeteria. With this enabled, it will have street ambience instead.\n\n\nSEED\nThe value that controls all randomization. If you set a seed, it will always end up the same. Use this to share randomizers with your friends or online." 
+        font_size: 15
+    Button:
+        size_hint_y: 0.1
+        pos_hint: {"y": 0}
+        text: "< Back"
+        on_press: root.manager.current = 'main'
