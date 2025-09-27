@@ -43,6 +43,9 @@ if os.getcwd().split("/")[-1] == "dist":
 else:
     backups = "backups"
 
+if os.path.exists(backups + "/images/.gitkeep"):
+    os.remove(backups + "/images/.gitkeep")
+
 
 formattingsettings = {"":"None", "clothes":"Shuffle Clothes Only", "expressions":"Shuffle Expressions Only", "characters":"Shuffle Within Character", "sprites": "Shuffle Across Characters", "shufflechars":"Shuffle Characters", "similar":"Shuffle Similar Backgrounds", "all":"Shuffle All Backgrounds", "og":"Class of '09 (Original)", "reup":"Class of '09: The Re-Up", "flip":"Class of '09: The Flipside"}
 
