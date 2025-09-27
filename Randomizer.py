@@ -10,6 +10,7 @@ from kivy.uix.checkbox import CheckBox
 from kivy.core.window import Window
 
 
+
 bgcatagories = {
     "exteriors":[
         'barcade ext.jpg', 'bookstore ext.jpg', 'concert ext.png', 'diner ext.jpg', "home jecka ext day.jpg", 'home jecka ext night.jpg', 'home nicole ext day.jpg', 'home nicole ext night.jpg', 'house ari night.png', 'house jecka night.png', 'house kylar night.jpg', 'library ext.png', 'school ext 1.jpg', 'school ext 2.jpg', 'school ext 3.jpg', 'school ext 4.jpg', 'school ext 5.jpg', 'school ext 6.jpg', 'coffeeext.jpg'
@@ -37,6 +38,12 @@ global flipfilter
 flipfilter = False
 seed = ""
 
+if os.getcwd().split("/")[-1] == "dist":
+    backups = "../backups"
+else:
+    backups = "backups"
+
+
 formattingsettings = {"":"None", "clothes":"Shuffle Clothes Only", "expressions":"Shuffle Expressions Only", "characters":"Shuffle Within Character", "sprites": "Shuffle Across Characters", "shufflechars":"Shuffle Characters", "similar":"Shuffle Similar Backgrounds", "all":"Shuffle All Backgrounds", "og":"Class of '09 (Original)", "reup":"Class of '09: The Re-Up", "flip":"Class of '09: The Flipside"}
 
 availablechar = ["clothes", "expressions", "characters", "sprites"]
@@ -44,9 +51,22 @@ availablebg = ["similar", "all"]
 availablegames = ["og", "reup", "flip"]
 games = []
 exes = {"og":"Class_Of_09.exe", "reup":"C09RU.exe", "flip":"C09FS.exe"}
-paths = {"og":"C:\\", "reup":"C:\\", "flip":"C:\\"}
+paths = {"og":"Empty", "reup":"C:\\", "flip":"Empty"}
 
 class MainWindow(Screen):
+    def restore(self):
+        print("restoring files")
+        if not paths['reup'] == "C:\\" and os.listdir(backups + "/images") != []:
+            images = []
+            for game in games:
+                for i in os.listdir(paths[game] + "\\game\\images"):
+                    images.append(i)
+            for image in images:
+                #print(paths["reup"] + "\\game\\images\\" + image)
+                os.remove(paths["reup"] + "\\game\\images\\" + image)
+            for image in os.listdir(backups + "/images"):
+                print((backups + "/images/" + image, paths['reup'] + "\\game\\images\\" + image))
+                shutil.copyfile(backups + "/images/" + image, paths['reup'] + "\\game\\images\\" + image)
     def checkbox_click(self, instance, value):
         global flipfilter, games, chartype, bgtype
         if instance == "flipfilter":
@@ -58,6 +78,8 @@ class MainWindow(Screen):
                 if paths[instance] == "C:\\":
                     while not exes[instance] in os.listdir(paths[instance]):
                         paths[instance] = filedialog.askdirectory()
+                        for image in os.listdir(paths[instance] + "\\game\\images"):
+                            shutil.copyfile(paths[instance] + "\\game\\images\\" + image, backups + "/images/" + image)
                         #print(os.listdir(paths[instance]))
                 games.append(instance)
             elif instance in availablebg:
@@ -108,6 +130,9 @@ class GenerateWindow(Screen):
         for game in games:
             for i in os.listdir(paths[game] + "\\game\\images"):
                 images.append(i)
+
+
+        
         for game in games:
             if chartype == "characters":
                 shufflewithincharacter(images, game)
@@ -193,15 +218,16 @@ def shufflesimilarbgs(game):
     
 
 def shuffle_image_set(names, game):
-    randomized = names.copy()
-    random.shuffle(randomized)
-    ##print(names, " Randomized: ", randomized)
+    if paths[game] != "C:\\":
+        randomized = names.copy()
+        random.shuffle(randomized)
+        ##print(names, " Randomized: ", randomized)
 
-    for filename in range(len(names)):
-        os.rename(paths[game] + "\\game\\images\\" + names[filename], paths[game] + "\\game\\images\\" + randomized[filename] + "renamed")
+        for filename in range(len(names)):
+            os.rename(paths[game] + "\\game\\images\\" + names[filename], paths[game] + "\\game\\images\\" + randomized[filename] + "renamed")
 
-    for filename in names:
-        os.rename(paths[game] + "\\game\\images\\" + filename + "renamed", paths[game] + "\\game\\images\\" + filename.split("renamed")[0])
+        for filename in names:
+            os.rename(paths[game] + "\\game\\images\\" + filename + "renamed", paths[game] + "\\game\\images\\" + filename.split("renamed")[0])
 
 Window.fullscreen = 'auto'
 
